@@ -47,11 +47,14 @@ define([
    *
    */
   function copy_scratchpad() {
-    clip.setText("Copy me!");
+    //clip.setText("Copy me!");
   }
-    clip.on( 'complete', function ( client, args ) {
-        window.alert("Copied text to clipboard: " + args.text );
-    });
+    //clip.on('complete', function ( client, args ) {
+    //    window.alert("Copied text to clipboard: " + args.text );
+    //});
+    //clip.on('dataRequested', function ( client, args ) {
+    //  clip.setText("Copy me!");
+    //});
 
 
   /**
@@ -89,7 +92,7 @@ define([
                          .on('click', empty_scratchpad)
                          .appendTo(scratchCtrl);
 
-        var btn_copy = $('<button type="button" class="scratchpad__copy">'+_('copy')+'</button>')
+        var btn_copy = $('<button type="button" class="scratchpad__copy" style="z-index:100000">'+_('copy')+'</button>')
                          .on('click', copy_scratchpad)
                          .appendTo(scratchCtrl);
 

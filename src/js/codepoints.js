@@ -1,6 +1,8 @@
 require(['jquery',
   'components/gettext',
-  //'components/scratchpad',
+  'components/scratchpad',
+  'zeroclipboard',
+  'polyfills/fromcodepoint',
   'jqueryui/dialog',
   'jqueryui/position',
   'components/jquery.cachedajax',
@@ -8,7 +10,7 @@ require(['jquery',
   'components/jquery.glossary',
   'components/dyn_pagination',
   'components/representations',
-  'components/load_font'], function($, gettext/*, scratchpad*/) {
+  'components/load_font'], function($, gettext, scratchpad, ZeroClipboard, cp) {
 
 var _ = gettext.gettext;
 
@@ -303,6 +305,19 @@ $(function() {
         });
       });
     }
+  }
+  if ($('.codepoint--tools').length) {
+    var
+      btn = $('<p data-clipboard-text="&#'+
+        $('.payload').data('cp')+
+      ';">'+
+      '<button class="button button--hi button--embed" type="button">'+
+      '<i class="icon-cog"></i> '+_('copy to clipboard')+'</button></p>'),
+      clip = new ZeroClipboard(btn);
+    $('.codepoint--tools').prepend(btn);
+    clip.on( 'complete', function ( client, args ) {
+        console.log("Copied text to clipboard: " + args.text );
+    } );
   }
 
 });
