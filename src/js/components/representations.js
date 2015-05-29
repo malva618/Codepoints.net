@@ -1,10 +1,11 @@
 var $ = require('jquery');
-var gettext = require('./gettext');
+var _ = require('./gettext').gettext;
 var tools = require('./unicodetools');
 
 var cp = $('.codepoint'),
-    _ = gettext.gettext,
-    repr, secondary;
+    repr,
+    secondary;
+
 
 /**
   * register a representation of this codepoint with its name and
@@ -18,6 +19,7 @@ function addRepr(name, formula) {
   repr.find('tbody').append($el.hide());
   secondary = secondary.add($el);
 }
+
 
 module.exports = function() {
   if (cp.length) {

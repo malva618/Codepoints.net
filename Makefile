@@ -51,7 +51,7 @@ node_modules/webfontloader/target/webfont.js:
 		rake compile
 
 $(DOCROOT)static/js/%.js: src/js/%.js
-	NODE_PATH=src/js node_modules/.bin/browserify $< | \
+	node_modules/.bin/browserify $< | \
 		node_modules/.bin/uglifyjs -c -m >$@
 
 $(DOCROOT)static/js/html5shiv.js: node_modules/html5shiv/dist/html5shiv.js

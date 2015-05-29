@@ -61,4 +61,3 @@ $(window).on('scroll', function() {
     placeholder.hide();
   }
 });
-

@@ -2,18 +2,20 @@
  * load a font to render the codepoint figure
  */
 var $ = require('jquery');
-var gettext = require('./gettext');
+var _ = require('./gettext').gettext;
 var WebFont = require('webfontloader');
 
-var _ = gettext.gettext;
 
 module.exports = function() {
   var cp_fig = $('.codepoint figure .fig');
+
   if (cp_fig.length) {
     var font_opts = $('#fonts option');
+
     if (font_opts.length) {
       var cp_font = font_opts.eq(0).val(),
           cp_fam  = $.trim(font_opts.eq(0).text());
+
       if (cp_font) {
         var block_id = $('.codepoint').data('blockId');
         WebFont.load({
