@@ -1,14 +1,16 @@
-require(['jquery',
-  'components/gettext',
-  //'components/scratchpad',
-  'jqueryui/dialog',
-  'jqueryui/position',
-  'components/jquery.cachedajax',
-  'components/jquery.tooltip',
-  'components/jquery.glossary',
-  'components/dyn_pagination',
-  'components/representations',
-  'components/load_font'], function($, gettext/*, scratchpad*/) {
+var $ = require('jquery');
+var gettext = require('components/gettext');
+//var scratchpad = require('components/scratchpad');
+var dyn_pagination = require('components/dyn_pagination');
+var representations = require('components/representations');
+var load_font = require('components/load_font');
+
+require('components/jquery.tooltip');
+require('components/jquery.glossary');
+
+require('jquery-ui/dialog');
+require('jquery-ui/position');
+
 
 var _ = gettext.gettext;
 
@@ -24,6 +26,12 @@ if (document.referrer.match(/^https?:\/\/translate.google(usercontent)?.[a-z.]+(
         }));
   }
 }
+
+dyn_pagination();
+
+representations();
+
+load_font();
 
 //scratchpad.init();
 
@@ -307,7 +315,5 @@ $(function() {
       });
     }
   }
-
-});
 
 });

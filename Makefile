@@ -40,24 +40,19 @@ css: $(CSS_TARGET)
 $(CSS_TARGET): $(DOCROOT)static/css/%.css : src/sass/%.scss
 	compass compile --force $<
 
-js: node_modules/jquery-ui \
-    $(DOCROOT)static/js/build.txt $(DOCROOT)static/js/html5shiv.js \
+js: $(JS_TARGET) \
+    $(DOCROOT)static/js/html5shiv.js \
     $(DOCROOT)static/ZeroClipboard.swf
 
-node_modules/jquery-ui:
-	node_modules/.bin/jqueryui-amd "$@"
-
-init: node_modules/jquery-ui/jqueryui node_modules/webfontloader/target/webfont.js
-
-node_modules/jquery-ui/jqueryui:
-	node_modules/.bin/jqueryui-amd "$@"
+init: node_modules/webfontloader/target/webfont.js
 
 node_modules/webfontloader/target/webfont.js:
 	cd node_modules/webfontloader && \
 		rake compile
 
-$(DOCROOT)static/js/build.txt: src/build.js $(JS_ALL)
-	cd src && ../node_modules/.bin/r.js -o build.js
+$(DOCROOT)static/js/%.js: src/js/%.js
+	NODE_PATH=src/js node_modules/.bin/browserify $< | \
+		node_modules/.bin/uglifyjs -c -m >$@
 
 $(DOCROOT)static/js/html5shiv.js: node_modules/html5shiv/dist/html5shiv.js
 	<$< node_modules/.bin/uglifyjs -c -m >$@
@@ -124,7 +119,6 @@ $(DOCROOT)locale/js.pot: $(JS_ALL)
 vendor:
 	npm install
 	$(MAKE) -C node_modules/d3 d3.v2.js NODE_PATH=../../../node_modules
-	node_modules/jqueryui-amd/jqueryui-amd.js node_modules/jquery-ui
 	cd node_modules/webfontloader && rake compile
 
 test: test-php test-phpunit test-sass test-js test-casper

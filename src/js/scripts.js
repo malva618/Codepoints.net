@@ -1,9 +1,8 @@
-require(['jquery',
-    'components/gettext',
-    'd3',
-    'jqueryui/accordion',
-    'jqueryui/dialog'],
-  function($, gettext, d3) {
+var $ = require('jquery');
+var gettext = require('components/gettext');
+var d3 = require('d3');
+require('jquery-ui/accordion');
+require('jquery-ui/dialog');
 
 var $window = $(window),
     _ = gettext.gettext;
@@ -92,6 +91,25 @@ function showDetails(obj) {
 
 var m0,
     o0;
+var feature;
+
+var projection = d3.geo.azimuthal()
+    .scale(400)
+    .origin([-30,20])
+    .mode("orthographic")
+    .translate([400, 400]);
+
+var circle = d3.geo.greatCircle().origin(projection.origin());
+
+var path = d3.geo.path().projection(projection);
+
+function clip(d) {
+  return path(circle.clip(d));
+}
+
+function refresh(duration) {
+  (duration ? feature.transition().duration(duration) : feature).attr("d", clip);
+}
 
 function mousedown() {
   m0 = [d3.event.pageX, d3.event.pageY];
@@ -115,26 +133,6 @@ function mouseup() {
     m0 = null;
   }
 }
-
-function refresh(duration) {
-  (duration ? feature.transition().duration(duration) : feature).attr("d", clip);
-}
-
-function clip(d) {
-  return path(circle.clip(d));
-}
-
-var feature;
-
-var projection = d3.geo.azimuthal()
-    .scale(400)
-    .origin([-30,20])
-    .mode("orthographic")
-    .translate([400, 400]);
-
-var circle = d3.geo.greatCircle().origin(projection.origin());
-
-var path = d3.geo.path().projection(projection);
 
 var svg = d3.select("#earth").on("mousedown", mousedown);
 
@@ -193,5 +191,3 @@ $('#sclist').accordion({
 d3.select(window)
     .on("mousemove", mousemove)
     .on("mouseup", mouseup);
-
-});

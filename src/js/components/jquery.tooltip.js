@@ -1,16 +1,21 @@
 /**
  * replace the title attribute with a custom tooltip
  */
-define(['jquery', 'jqueryui/position'], function($) {
+var $ = require('jquery');
+require('jquery-ui/position');
+
+
 var tipIDCounter = 0;
 
-$.fn.tooltip = function() {
+module.exports = $.fn.tooltip = function() {
   var targets = $();
+
   if (this.is(function() {
     return this.nodeType === 1 && this.title;
   })) {
     targets = targets.add(this);
   }
+
   targets.add('[title]', this).each(function() {
     var origin = $(this),
         title = origin.attr('title'),
@@ -64,6 +69,6 @@ $.fn.tooltip = function() {
       }
     }
   });
+
   return this;
 };
-});

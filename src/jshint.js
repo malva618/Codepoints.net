@@ -2,9 +2,9 @@
     "curly": true,
     "eqeqeq": true,
     "globals": {
-        "define": false,
-        "require": false,
         "document": false,
+        "module": false,
+        "require": false,
         "window": false,
         "-console": false
     },
