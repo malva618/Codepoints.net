@@ -51,13 +51,35 @@ node_modules/webfontloader/target/webfont.js:
 		rake compile
 
 $(DOCROOT)static/js/%.js: src/js/%.js
-	node_modules/.bin/browserify $< | \
-		node_modules/.bin/uglifyjs -c -m >$@
+	$(info build $(notdir $@))
+	@if [ "$(notdir $@)" == "global.js" ]; then \
+		node_modules/.bin/browserify $< --noparse=jquery | \
+			node_modules/.bin/uglifyjs -c -m >$@ ; \
+	else \
+		node_modules/.bin/browserify $< --noparse=jquery \
+			--external components/dyn_pagination \
+			--external components/gettext \
+			--external components/jquery.cachedajax \
+			--external components/jquery.glossary \
+			--external components/jquery.tooltip \
+			--external document-scroll-element \
+			--external jquery \
+			--external jquery-ui/button \
+			--external jquery-ui/core \
+			--external jquery-ui/dialog \
+			--external jquery-ui/draggable \
+			--external jquery-ui/mouse \
+			--external jquery-ui/position \
+			--external jquery-ui/resizable \
+			--external jquery-ui/widget \
+		  | \
+			node_modules/.bin/uglifyjs -c -m >$@ ; \
+	fi
 
 $(DOCROOT)static/js/html5shiv.js: node_modules/html5shiv/dist/html5shiv.js
 	<$< node_modules/.bin/uglifyjs -c -m >$@
 
-$(DOCROOT)static/ZeroClipboard.swf: node_modules/zeroclipboard/ZeroClipboard.swf
+$(DOCROOT)static/ZeroClipboard.swf: node_modules/zeroclipboard/dist/ZeroClipboard.swf
 	cp "$<" "$@"
 
 cachebust: $(JS_ALL) $(CSS_TARGET)
